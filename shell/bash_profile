@@ -1,0 +1,26 @@
+#############################
+# Environment Configuration #
+#############################
+
+# Set the default editor to Nano
+export EDITOR=nano
+export GIT_EDITOR=nano
+
+
+#######################
+# Aliases & Functions #
+#######################
+
+# Fixes a common typo while navigating
+alias cd..="cd .."
+
+# Shorthand for clear
+alias cl="clear"
+
+# ls with fancy options for all files and dirs; IN COLOR
+alias ls="ls -CFGA"
+
+# Pretty prints all of the PATH components
+alias path="echo -e ${PATH//:/\\n}"
+
+cd() { builtin cd "$@"; ls;}
