@@ -39,4 +39,4 @@ addpath() {
 # PATH Configuration #
 ######################
 
-addpath "~/Library/Homebrew/brew/bin"
+#Nothing yet
