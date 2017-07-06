@@ -117,6 +117,7 @@ for cask in ${CASKS[@]}; do
 	printf "$cask\n"
 done
 unset cask
+printf "\n"
 
 for cask in ${CASKS[@]}; do
 	printf "Installing $cask...\n"
