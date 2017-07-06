@@ -66,32 +66,13 @@ configure_shell() {
 }
 
 
+##
+# Homebrew installation
+##
 install_homebrew() {
 	printf "Installing homebrew...\n"
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 }
-
-
-
-
-##
-# Install Sublime Text
-##
-# install_sublime() {
-# printf "Downloading Sublime text package...\n"
-
-# SUBLIME_PACKAGE="https://download.sublimetext.com/Sublime%20Text%20Build%203126.dmg"
-# SUBLIME_DOWNLOAD="$HOME/Downloads/Sublime Text.dmg"
-
-# curl "$SUBLIME_PACKAGE" --output "$SUBLIME_DOWNLOAD"
-
-# hdiutil attach "$SUBLIME_DOWNLOAD"
-
-# cp -R "/Volumes/Sublime Text" "/Applications/Sublime Text"
-# printf "Sublime Text successfully installed\n"
-# printf "\n"
-# }
-
 
 
 ##
@@ -120,12 +101,21 @@ printf "\n"
 
 brew tap caskroom/cask
 
-printf "Tapping casks...\n"
-
 CASKS=(
-	google-chrome 
-	spectacle
+	google-chrome 	# Chrome browser
+	spectacle		# Mac window manager
+	postman			# REST service testing
+	gimp			# Photoshop, but free
+	sublime-text	# Text editing
+	android-studio  # Android!
 	)
+
+printf "Packages to be installed:\n"
+
+for cask in ${CASKS[@]}; do
+	printf "$cask\n"
+done
+unset cask
 
 for cask in ${CASKS[@]}; do
 	printf "Installing $cask...\n"
