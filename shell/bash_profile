@@ -23,4 +23,20 @@ alias ls="ls -CFGA"
 # Pretty prints all of the PATH components
 alias path="echo -e ${PATH//:/\\n}"
 
+# Lists directories after changing directories
 cd() { builtin cd "$@"; ls;}
+
+# Adds the arguments to the end of PATH (not permanently)
+addpath() {
+    for var in "$@"
+    do
+        PATH=$PATH:$var
+    done
+}
+
+
+######################
+# PATH Configuration #
+######################
+
+addpath "~/Library/Homebrew/brew/bin"
