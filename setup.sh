@@ -84,6 +84,7 @@ backup_and_create_dir
 
 configure_shell
 
+# TODO use which
 silently "brew -v"
 if [[ $? -eq 0 ]]; then
 	printf "Homebrew is already installed\n"
