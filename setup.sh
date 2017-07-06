@@ -71,6 +71,9 @@ install_homebrew() {
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 }
 
+
+
+
 ##
 # Install Sublime Text
 ##
@@ -88,18 +91,6 @@ install_homebrew() {
 # printf "Sublime Text successfully installed\n"
 # printf "\n"
 # }
-
-
-#Install homebrew if not present yet
-#BREW_DIR="$HOME/Library/Homebrew/brew"
-#source $BREW_DIR/bin/brew -v
-
-#if [ $? -eq 0 ]
-#then
-#    echo "brew already installed"
-#else
-#    echo "Downloading and installing brew"
-#fi
 
 
 
@@ -126,4 +117,20 @@ else
 fi
 printf "\n"
 
-echo Setup complete!
+
+brew tap caskroom/cask
+
+printf "Tapping casks...\n"
+
+CASKS=(
+	google-chrome 
+	spectacle
+	)
+
+for cask in ${CASKS[@]}; do
+	printf "Installing $cask...\n"
+	brew cask install $cask
+done 
+
+
+printf "\nSetup complete!\n"
