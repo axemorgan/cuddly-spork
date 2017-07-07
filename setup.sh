@@ -79,6 +79,20 @@ install_homebrew() {
 
 
 ##
+# Configure macOS defaults
+##
+configure_defaults() {
+	DEFAULTS_FILE="$SCRIPT_DIR/macos_defaults"
+	if [[ -e $DEFAULTS_FILE ]]; then
+		source $DEFAULTS_FILE
+		printf "Finished configuring macOS\n"
+	else
+		printf "Failed to find defaults file at $DEFAULTS_FILE\nSkipping macOS configuration\n"
+	fi
+}
+
+
+##
 # Main
 ##
 overwrite_warning
@@ -135,5 +149,8 @@ for cask in ${CASKS[@]}; do
 done 
 
 printf "Done installing casks\n\n"
+
+printf "Configuring macOS defaults...\n"
+configure_defaults
 
 printf "\nSetup complete!\n"
