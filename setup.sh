@@ -2,6 +2,9 @@
 
 EXIT_CODE_HOMEBREW_INSTALL_FAILED=99
 
+SCRIPT_DIR=$(pwd)
+
+
 ##
 # Runs the given command and suppresses its output
 ##
@@ -30,7 +33,7 @@ overwrite_warning() {
 # Create the dotfiles directory if necessary and backup existing files
 ##
 backup_and_create_dir() {
-	SCRIPT_DIR=$(pwd)
+
 	DOTFILES_DIR="$HOME/dotfiles"
 	BACKUP_DIR="$HOME/dotfiles_old"
 
@@ -108,7 +111,9 @@ CASKS=(
 	postman			# REST service testing
 	gimp			# Photoshop, but free
 	sublime-text	# Text editing
+	java 			# Java is required for Android SDK
 	android-studio  # Android!
+	android-sdk		# Android SDK
 	)
 
 printf "Packages to be installed:\n"
@@ -120,9 +125,15 @@ unset cask
 printf "\n"
 
 for cask in ${CASKS[@]}; do
-	printf "Installing $cask...\n"
-	brew cask install $cask
+	CASK_FILES=$(brew cask list $cask)
+	if [[ $CASK_FILES ]]; then
+		printf "$cask already installed\n"
+	else
+		printf "Installing $cask...\n"
+		brew cask install $cask
+	fi
 done 
 
+printf "Done installing casks\n\n"
 
 printf "\nSetup complete!\n"
