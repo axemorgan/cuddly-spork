@@ -6,6 +6,9 @@
 export EDITOR=nano
 export GIT_EDITOR=nano
 
+# Set Android SDK root directory
+export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
+
 
 #######################
 # Aliases & Functions #
