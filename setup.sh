@@ -118,17 +118,19 @@ printf "\n"
 
 
 brew tap caskroom/cask
+brew tap burnsra/tap
 
 CASKS=(
 	google-chrome 	# Chrome browser
-	spectacle		# Mac window manager
-	postman			# REST service testing
-	gimp			# Photoshop, but free
+	spectacle	# Mac window manager
+	postman		# REST service testing
+	gimp		# Photoshop, but free
 	sublime-text	# Text editing
-	java 			# Java is required for Android SDK
+	java 		# Java is required for Android SDK
 	android-studio  # Android!
-	android-sdk		# Android SDK
-	)
+	android-sdk	# Android SDK
+	spike           # Spike Proxy
+)
 
 printf "Packages to be installed:\n"
 
