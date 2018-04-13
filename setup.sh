@@ -64,6 +64,9 @@ configure_shell() {
 	printf "Setting up bash_profile...\n"
 	ln -fs $DOTFILES_DIR/shell/bash_profile "$HOME/.bash_profile"
 
+    printf "Settup up bashrc...\n"
+    ln -fs $DOTFILES_DIR/shell/bashrc "$HOME/.bashrc"
+
 	printf "Shell configuration complete\n"
 	printf "\n"
 }
