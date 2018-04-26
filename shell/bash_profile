@@ -11,6 +11,7 @@ export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
 
 source ~/.bashrc
 
+
 #######################
 # Aliases & Functions #
 #######################
@@ -37,6 +38,16 @@ addpath() {
         PATH=$PATH:$var
     done
 }
+
+
+###################
+# Bash Completion #
+###################
+
+if [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
+  __GIT_PROMPT_DIR=$(brew --prefix)/opt/bash-git-prompt/share
+  source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
+fi
 
 
 ######################

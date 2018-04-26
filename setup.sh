@@ -73,6 +73,18 @@ configure_shell() {
 
 
 ##
+# Configure Git - this should be called only after Git is installed
+##
+configure_git() {
+	printf "Configuring Git...\n"
+	git config --global user.name "Alex Morgan"
+	git config --global user.email "axemorgan@gmail.com"
+	printf "Git configuration complete\n"
+	printf "\n"
+}
+
+
+##
 # Homebrew installation
 ##
 install_homebrew() {
@@ -85,6 +97,8 @@ install_homebrew() {
 # Configure macOS defaults
 ##
 configure_defaults() {
+	printf "Configuring macOS defaults...\n"
+	
 	DEFAULTS_FILE="$SCRIPT_DIR/macos_defaults"
 	if [[ -e $DEFAULTS_FILE ]]; then
 		source $DEFAULTS_FILE
@@ -125,14 +139,15 @@ brew tap burnsra/tap
 
 CASKS=(
 	google-chrome 	# Chrome browser
-	spectacle	# Mac window manager
-	postman		# REST service testing
-	gimp		# Photoshop, but free
+	spectacle		# Mac window manager
+	postman			# REST service testing
+	gimp			# Photoshop, but free
 	sublime-text	# Text editing
-	java 		# Java is required for Android SDK
+	java 			# Java is required for Android SDK
 	android-studio  # Android!
-	android-sdk	# Android SDK
+	android-sdk		# Android SDK
 	spike           # Spike Proxy
+	bash-completion # Bash completion
 )
 
 printf "Packages to be installed:\n"
@@ -155,7 +170,8 @@ done
 
 printf "Done installing casks\n\n"
 
-printf "Configuring macOS defaults...\n"
+configure_git
+
 configure_defaults
 
 printf "\nSetup complete!\n"
