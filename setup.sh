@@ -4,71 +4,117 @@ EXIT_CODE_HOMEBREW_INSTALL_FAILED=99
 
 SCRIPT_DIR=$(pwd)
 
+IS_WORK_INSTALLATION=0
 
-##
+
+################################################################################
 # Runs the given command and suppresses its output
-##
+# Arguments: 
+#   $1 : the command to run
+# Returns:
+#   Nothing
+################################################################################
 silently() {
-	eval $1 > /dev/null 2>&1
+  eval $1 > /dev/null 2>&1
 }
 
-##
-# Warn user about overwriting current dotfiles
-##
-overwrite_warning() {
-	while true; do
-		read -p "Warning: this script will overwrite any current dotfiles. Continue? [y/n] " response
-		case $response in
-			[Yy]* ) break;;
-			[Nn]* ) printf "Setup cancelled\n"; exit;;
-			* ) printf "Please answer yes or no\n";;
-		esac
-	done
+################################################################################
+# Warns the user about overwriting existing dotfiles and prompts them to 
+# continue. An afirmative response continues, a negative response exits the 
+# script.
+# Arguments:
+#   None
+# Returns:
+#   Nothing
+################################################################################
+show_overwrite_warning() {
+  while true; do
+    read -p "Warning: this script will overwrite any current dotfiles. Continue? [y/n] " response
+    case $response in
+      [Yy]* ) break;;
+      [Nn]* ) printf "Setup cancelled\n"; exit;;
+      * ) printf "Please answer yes or no\n";;
+    esac
+  done
 
-	printf "\n"
+  printf "\n"
 }
 
 
-##
-# Create the dotfiles directory if necessary and backup existing files
-##
+################################################################################
+# Creates the dotfiles directory, if necessary, and backs up any existing files
+# Arguments:
+#   None
+# Returns:
+#   Nothing
+################################################################################
 backup_and_create_dir() {
+  DOTFILES_DIR="$HOME/dotfiles"
+  local backup_dir="$HOME/dotfiles_old"
 
-	DOTFILES_DIR="$HOME/dotfiles"
-	BACKUP_DIR="$HOME/dotfiles_old"
+  # Checks for an existing dotfiles directory
+  if [[ -d $DOTFILES_DIR ]]; then
+    printf "Found existing dotfiles. Backing up to $backup_dir\n"
+    mkdir -p "$backup_dir"
+    cp -R "$DOTFILES_DIR"/ "$backup_dir"
+    rm -r "$DOTFILES_DIR"
+    mkdir -p "$DOTFILES_DIR"
+    printf "Backup finished\n"
+  else
+    mkdir -p $DOTFILES_DIR
+    printf "Created dotfiles directory\n"
+  fi
 
-	# Check for an existing dotfiles directory
-	if [[ -d $DOTFILES_DIR ]]; then	
-		printf "Found existing dotfiles. Backing up to $BACKUP_DIR\n"
-		mkdir -p "$BACKUP_DIR"
-		cp -R "$DOTFILES_DIR"/ "$BACKUP_DIR"
-		rm -r "$DOTFILES_DIR"
-		mkdir -p "$DOTFILES_DIR"
-		printf "Backup finished\n"
-	else
-		mkdir -p $DOTFILES_DIR
-		printf "Created dotfiles directory\n"
-	fi
+  printf "\n"
+}
 
-	printf "\n"
+################################################################################
+# Prompts the user to choose work or home installation which is used to 
+# configure the script.
+# Arguments:
+#   None
+# Returns:
+#   IS_WORK_INSTALLATION will be set true or false
+################################################################################
+prompt_for_work_or_home() {
+  while true; do
+    read -p "Is this a work or home installation? [work/home] " response
+    case "$response" in
+      work* ) IS_WORK_INSTALLATION=1; break;;
+      home* ) IS_WORK_INSTALLATION=0; break;;
+      * ) printf "Please answer work or home\n";;
+    esac
+  done
+
+  printf "\n"
 }
 
 
-##
-# Shell Configuration
-##
+################################################################################
+# Configures bashrc and bash_profile
+# Arguments:
+#   IS_WORK_ENVIRONMENT: Whether the script is being run in work or home mode.
+# Returns:
+#   Nothing
+################################################################################
 configure_shell() {
-	printf "Copying shell scripts...\n"
-	cp -R "$SCRIPT_DIR/shell" "$DOTFILES_DIR"
+  printf "Copying shell scripts...\n"
+  cp -R "$SCRIPT_DIR/shell" "$DOTFILES_DIR"
 
-	printf "Setting up bash_profile...\n"
-	ln -fs $DOTFILES_DIR/shell/bash_profile "$HOME/.bash_profile"
+  if [ "$IS_WORK_INSTALLATION" -eq 1 ]; then
+    echo "source $DOTFILES_DIR/bashrc_work" >> $DOTFILES_DIR/shell/bashrc
+  else
+  	echo "source $DOTFILES_DIR/bashrc_home" >> $DOTFILES_DIR/shell/bashrc
+  fi
 
-    printf "Settup up bashrc...\n"
-    ln -fs $DOTFILES_DIR/shell/bashrc "$HOME/.bashrc"
+  printf "Settup up bashrc...\n"
+  ln -fs $DOTFILES_DIR/shell/bashrc "$HOME/.bashrc"
 
-	printf "Shell configuration complete\n"
-	printf "\n"
+  printf "Setting up bash_profile...\n"
+  ln -fs $DOTFILES_DIR/shell/bash_profile "$HOME/.bash_profile"
+
+  printf "Shell configuration complete\n"
+  printf "\n"
 }
 
 
@@ -109,14 +155,17 @@ configure_defaults() {
 }
 
 
-##
+################################################################################
 # Main
-##
-overwrite_warning
+################################################################################
+main() {
+  show_overwrite_warning
 
-backup_and_create_dir
+  backup_and_create_dir
 
-configure_shell
+  prompt_for_work_or_home
+
+  configure_shell
 
 # TODO use which
 silently "brew -v"
@@ -175,3 +224,6 @@ configure_git
 configure_defaults
 
 printf "\nSetup complete!\n"
+}
+
+main
