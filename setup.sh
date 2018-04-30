@@ -102,9 +102,9 @@ configure_shell() {
   cp -R "$SCRIPT_DIR/shell" "$DOTFILES_DIR"
 
   if [ "$IS_WORK_INSTALLATION" -eq 1 ]; then
-    echo "source $DOTFILES_DIR/bashrc_work" >> $DOTFILES_DIR/shell/bashrc
+    echo "source $DOTFILES_DIR/bashrc_work\n\n" >> $DOTFILES_DIR/shell/bashrc
   else
-  	echo "source $DOTFILES_DIR/bashrc_home" >> $DOTFILES_DIR/shell/bashrc
+  	echo "source $DOTFILES_DIR/bashrc_home\n\n" >> $DOTFILES_DIR/shell/bashrc
   fi
 
   printf "Settup up bashrc...\n"
@@ -118,24 +118,69 @@ configure_shell() {
 }
 
 
-##
-# Configure Git - this should be called only after Git is installed
-##
-configure_git() {
-	printf "Configuring Git...\n"
-	git config --global user.name "Alex Morgan"
-	git config --global user.email "axemorgan@gmail.com"
-	printf "Git configuration complete\n"
-	printf "\n"
+################################################################################
+# Checks for homebrew and installs it if needed
+# Arguments:
+#   None
+# Returns:
+#   Nothing
+################################################################################
+install_homebrew() {
+  silently "brew -v"
+  if [[ $? -eq 0 ]]; then
+    printf "Homebrew is already installed 😎\n"
+  else
+    printf "Installing homebrew...\n"
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    if [[ $? -eq 0 ]]; then
+      printf "Homebrew successfully installed\n"
+    else
+      printf "Failed to install homebrew, exiting setup\n"
+      exit $EXIT_CODE_HOMEBREW_INSTALL_FAILED
+	fi
+  fi
+  printf "\n"	
 }
 
 
-##
-# Homebrew installation
-##
-install_homebrew() {
-	printf "Installing homebrew...\n"
-	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+################################################################################
+# Installs a package using homebrew
+# Arguments:
+#   $1 : the package name to install
+# Returns:
+#   Nothing
+################################################################################
+install_package() {
+  FILES=$(brew list $1)
+  if [[ $FILES ]]; then
+    printf "$1 already installed\n"
+  else
+    printf "Installing $1...\n"
+    brew install $1
+  fi
+}
+
+################################################################################
+# Installs and configures git, and some extra git tools
+# Arguments:
+#   None
+# Returns:
+#   Nothing
+################################################################################
+configure_git() {
+  install_package git
+
+  printf "Configuring git...\n"
+  git config --global user.name "Alex Morgan"
+  git config --global user.email "axemorgan@gmail.com"
+
+  install_package bash-git-prompt
+
+  install_package bash-completion
+
+  printf "Git configuration complete\n"
+
+  printf "\n"
 }
 
 
@@ -167,20 +212,7 @@ main() {
 
   configure_shell
 
-# TODO use which
-silently "brew -v"
-if [[ $? -eq 0 ]]; then
-	printf "Homebrew is already installed\n"
-else
-	install_homebrew
-	if [[ $? -eq 0 ]]; then
-		printf "Homebrew successfully installed\n"
-	else
-		printf "Failed to install homebrew\n"
-		exit $EXIT_CODE_HOMEBREW_INSTALL_FAILED
-	fi
-fi
-printf "\n"
+  install_homebrew
 
 
 brew tap caskroom/cask
@@ -196,7 +228,6 @@ CASKS=(
 	android-studio  # Android!
 	android-sdk		# Android SDK
 	spike           # Spike Proxy
-	bash-completion # Bash completion
 )
 
 printf "Packages to be installed:\n"

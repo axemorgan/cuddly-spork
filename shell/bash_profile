@@ -1,21 +1,18 @@
 #############################
 # Environment Configuration #
 #############################
+source ~/.bashrc
 
 # Set the default editor to Nano
 export EDITOR=nano
-export GIT_EDITOR=nano
 
 # Set Android SDK root directory
 export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
-
-source ~/.bashrc
 
 
 #######################
 # Aliases & Functions #
 #######################
-
 # Fixes a common typo while navigating
 alias cd..="cd .."
 
@@ -43,13 +40,13 @@ addpath() {
 #####################
 # Git Configuration #
 #####################
-
 if [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
   __GIT_PROMPT_DIR=$(brew --prefix)/opt/bash-git-prompt/share
   source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
 fi
 
 export GIT_PROMPT_ONLY_IN_REPO=1
+export GIT_EDITOR=nano
 
 ######################
 # PATH Configuration #
