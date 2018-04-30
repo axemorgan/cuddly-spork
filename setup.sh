@@ -102,10 +102,11 @@ configure_shell() {
   cp -R "$SCRIPT_DIR/shell" "$DOTFILES_DIR"
 
   if [ "$IS_WORK_INSTALLATION" -eq 1 ]; then
-    echo "source $DOTFILES_DIR/bashrc_work\n\n" >> $DOTFILES_DIR/shell/bashrc
+    echo "source $DOTFILES_DIR/shell/bashrc_work" >> $DOTFILES_DIR/shell/bashrc
   else
-  	echo "source $DOTFILES_DIR/bashrc_home\n\n" >> $DOTFILES_DIR/shell/bashrc
+  	echo "source $DOTFILES_DIR/shell/bashrc_home" >> $DOTFILES_DIR/shell/bashrc
   fi
+  echo "" >> $DOTFILES_DIR/shell/bashrc
 
   printf "Settup up bashrc...\n"
   ln -fs $DOTFILES_DIR/shell/bashrc "$HOME/.bashrc"
@@ -216,6 +217,8 @@ configure_defaults() {
 	else
 		printf "Failed to find defaults file at $DEFAULTS_FILE\nSkipping macOS configuration\n"
 	fi
+
+  printf "\n"
 }
 
 
@@ -286,6 +289,9 @@ main() {
   fi
 
   configure_defaults
+
+  printf "Applying new configuration to current terminal session...\n"
+  source ~/.bash_profile
 
   printf "\nSetup complete!\n"
 }
