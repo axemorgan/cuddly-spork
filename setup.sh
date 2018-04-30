@@ -160,6 +160,25 @@ install_package() {
   fi
 }
 
+
+################################################################################
+# Installs a cask using homebrew
+# Arguments:
+#   $1 : the cask name to install
+# Returns:
+#   Nothing
+################################################################################
+install_cask() {
+  FILES=$(brew cask list $1)
+  if [[ $FILES ]]; then
+    printf "$1 already installed\n"
+  else
+    printf "Installing $1...\n"
+    brew cask install $1
+  fi
+}
+
+
 ################################################################################
 # Installs and configures git, and some extra git tools
 # Arguments:
@@ -214,47 +233,61 @@ main() {
 
   install_homebrew
 
+  configure_git
 
-brew tap caskroom/cask
-brew tap burnsra/tap
+  brew tap caskroom/cask
 
-CASKS=(
-	google-chrome 	# Chrome browser
-	spectacle		# Mac window manager
-	postman			# REST service testing
-	gimp			# Photoshop, but free
-	sublime-text	# Text editing
-	java 			# Java is required for Android SDK
-	android-studio  # Android!
-	android-sdk		# Android SDK
-	spike           # Spike Proxy
-)
+  CASKS=(
+	  google-chrome 	# Chrome browser
+	  spectacle		# Mac window manager
+	  postman			# REST service testing
+	  gimp			# Photoshop, but free
+	  sublime-text	# Text editing
+	  java 			# Java is required for Android SDK
+	  android-studio  # Android!
+	  android-sdk		# Android SDK
+    gitkraken       # Git GUI Tool
+  )
 
-printf "Packages to be installed:\n"
+  printf "Casks to be installed:\n"
 
-for cask in ${CASKS[@]}; do
-	printf "$cask\n"
-done
-unset cask
-printf "\n"
+  for cask in ${CASKS[@]}; do
+	  printf "$cask\n"
+  done
+  unset cask
+  printf "\n"
 
-for cask in ${CASKS[@]}; do
-	CASK_FILES=$(brew cask list $cask)
-	if [[ $CASK_FILES ]]; then
-		printf "$cask already installed\n"
-	else
-		printf "Installing $cask...\n"
-		brew cask install $cask
-	fi
-done 
+  for cask in ${CASKS[@]}; do
+	  install_cask "$cask"
+  done 
 
-printf "Done installing casks\n\n"
 
-configure_git
+  # Work only cask installation
+  if [ "$IS_WORK_INSTALLATION" -eq 1 ]; then
+    brew tap burnsra/tap
 
-configure_defaults
+    CASKS=(
+      spike           # Spike Proxy
+    )
 
-printf "\nSetup complete!\n"
+    printf "Work casks to be installed:\n"
+
+    for cask in ${CASKS[@]}; do
+      printf "$cask\n"
+    done
+    unset cask
+    printf "\n"
+
+    for cask in ${CASKS[@]}; do
+      install_cask "$cask"
+    done 
+
+    printf "Done installing work casks\n\n"
+  fi
+
+  configure_defaults
+
+  printf "\nSetup complete!\n"
 }
 
 main
