@@ -250,6 +250,7 @@ main() {
 	  android-studio  # Android!
 	  android-sdk		# Android SDK
     gitkraken       # Git GUI Tool
+    slack
   )
 
   printf "Casks to be installed:\n"
