@@ -1,0 +1,10 @@
+#!/bin/bash
+# Lists all existing braches that have been merged into dev oldest to newest, then lists all branches that have not been merged into dev.
+
+echo "\nListing oldest merged branches\n"
+
+git branch -a --merged dev --sort=committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
+
+echo "\n\nListing oldest un-merged branches\n"
+
+git branch -a --no-merged dev --sort=committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'

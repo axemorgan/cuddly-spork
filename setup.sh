@@ -154,7 +154,7 @@ install_homebrew() {
 install_package() {
   FILES=$(brew list $1)
   if [[ $FILES ]]; then
-    printf "$1 already installed\n"
+    printf "☑️  $1 already installed\n"
   else
     printf "Installing $1...\n"
     brew install $1
@@ -172,7 +172,7 @@ install_package() {
 install_cask() {
   FILES=$(brew cask list $1)
   if [[ $FILES ]]; then
-    printf "$1 already installed\n"
+    printf "☑️  $1 already installed\n"
   else
     printf "Installing $1...\n"
     brew cask install $1

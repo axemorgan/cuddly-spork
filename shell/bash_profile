@@ -52,4 +52,5 @@ export GIT_EDITOR=nano
 # PATH Configuration #
 ######################
 
-PATH=$PATH:/usr/local/Caskroom/android-sdk/platform-tools
+export PATH=$PATH:~/dotfiles/shell/bin
+export PATH=$PATH:/usr/local/Caskroom/android-sdk/platform-tools
