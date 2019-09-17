@@ -100,6 +100,7 @@ prompt_for_work_or_home() {
 configure_shell() {
   printf "Copying shell scripts...\n"
   cp -R "$SCRIPT_DIR/shell" "$DOTFILES_DIR"
+  chmod +x $DOTFILES_DIR/shell/bin/*
 
   if [ "$IS_WORK_INSTALLATION" -eq 1 ]; then
     echo "source $DOTFILES_DIR/shell/bashrc_work" >> $DOTFILES_DIR/shell/bashrc

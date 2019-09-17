@@ -3,4 +3,3 @@
 # bashrc configuration that is common to all settings
 
 eval "$(rbenv init -)"
-

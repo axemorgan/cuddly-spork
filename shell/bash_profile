@@ -1,25 +1,17 @@
-#############################
-# Environment Configuration #
-#############################
 source ~/.bashrc
-
-# Set the default editor to Nano
-export EDITOR=nano
-
-# Set Android SDK root directory
-export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
 
 
 #######################
 # Aliases & Functions #
 #######################
+
 # Fixes a common typo while navigating
 alias cd..="cd .."
 
 # Shorthand for clear
 alias cl="clear"
 
-# ls with fancy options for all files and dirs; IN COLOR
+# ls with fancy options for all files and dirs; IN COLOR!
 alias ls="ls -CFGA"
 
 # Pretty prints all of the PATH components
@@ -28,6 +20,9 @@ alias path="echo -e ${PATH//:/\\n}"
 # Lists directories after changing directories
 cd() { builtin cd "$@"; ls;}
 
+# Shorthand for fastlane using bundler
+fast() { bundle exec fastlane "$@"; }
+
 # Adds the arguments to the end of PATH (not permanently)
 addpath() {
     for var in "$@"
@@ -35,6 +30,17 @@ addpath() {
         PATH=$PATH:$var
     done
 }
+
+
+#############################
+# Environment Configuration #
+#############################
+
+# Set the default editor to Nano
+export EDITOR=nano
+
+# Set Android SDK root directory
+export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
 
 
 #####################
@@ -47,6 +53,7 @@ fi
 
 export GIT_PROMPT_ONLY_IN_REPO=1
 export GIT_EDITOR=nano
+
 
 ######################
 # PATH Configuration #
