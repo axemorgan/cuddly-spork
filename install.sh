@@ -56,4 +56,4 @@ else
     curl -u axemorgan -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/user/keys -d "{\"title\":\"$MACHINE_NAME\", \"key\":\"$PUBLIC_KEY\"}"
 fi
 
-sh -c "$HOME/$PROJECTS_DIR/cuddly-spork/setup.sh"
+# sh -c "$HOME/$PROJECTS_DIR/cuddly-spork/setup.sh"
