@@ -32,6 +32,20 @@ function clone_or_update_repo() {
 }
 
 echo "Installing dotfiles..."
+
+# Setup proxy variables for Spike
+read -p "Is this machine proxied by Spike? (y/n): " PROXIED
+if [ $PROXIED == 'y' ]; then
+    export http_proxy="http://127.0.0.1:3128"
+    export https_proxy=$http_proxy
+    export ftp_proxy=$http_proxy
+    export rsync_proxy=$http_proxy
+    export HTTP_PROXY=$http_proxy
+    export HTTPS_PROXY=$http_proxy
+    export FTP_PROXY=$http_proxy
+    export RSYNC_PROXY=$http_proxy
+fi
+
 create_projects_directory
 clone_or_update_repo
 
