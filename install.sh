@@ -42,4 +42,18 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 git config --global user.name "Alex Morgan"
 git config --global user.email "axemorgan@gmail.com"
 
+echo "Connecting Github SSH..."
+read -p "Give a name to identify this machine: " MACHINE_NAME
+EXISTING_SSH_KEY=$(curl -u axemorgan -H "Accept: application/vnd.github.v3+json" https://api.github.com/user/keys | jq ".[] | select(.title == \"$MACHINE_NAME\")")
+
+if [ ! -z "$EXISTING_SSH_KEY" ]; then
+    echo "Found an existing SSH key on Github"
+    jq . <<<"$EXISTING_SSH_KEY"
+else
+    echo "Generating an SSH key and uploading to Github"
+    ssh-keygen -t RSA -f "$HOME/.ssh/${MACHINE_NAME// /_}" -N ""
+    PUBLIC_KEY=$(cat $HOME/.ssh/${MACHINE_NAME// /_}.pub)
+    curl -u axemorgan -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/user/keys -d "{\"title\":\"$MACHINE_NAME\", \"key\":\"$PUBLIC_KEY\"}"
+fi
+
 sh -c "$HOME/$PROJECTS_DIR/cuddly-spork/setup.sh"
