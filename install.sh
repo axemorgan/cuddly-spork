@@ -38,4 +38,8 @@ clone_or_update_repo
 # Install Oh My Zsh
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
+# Configure Git
+git config --global user.name "Alex Morgan"
+git config --global user.email "axemorgan@gmail.com"
+
 sh -c "$HOME/$PROJECTS_DIR/cuddly-spork/setup.sh"
