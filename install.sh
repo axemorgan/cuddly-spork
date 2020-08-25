@@ -52,8 +52,9 @@ clone_or_update_repo
 # Install Oh My Zsh
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-# Symlink to the zsh custom plugin
+# Symlink to the zsh custom plugin then refresh to load the new config
 ln -s "$REPO_DIR/configuration.zsh" "$ZSH/custom/configuration.zsh"
+exec zsh
 
 # Configure Git
 git config --global user.name "Alex Morgan"
