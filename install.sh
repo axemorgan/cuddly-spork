@@ -11,7 +11,7 @@ function create_projects_directory() {
         PROJECTS_DIR=$DEFAULT_PROJECTS_DIR
     fi
 
-    if [ ! -d "~/$PROJECTS_DIR" ]; then
+    if [ ! -d "$HOME/$PROJECTS_DIR" ]; then
         mkdir "$HOME/$PROJECTS_DIR"
     fi
 }
