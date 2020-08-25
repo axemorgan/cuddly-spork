@@ -56,5 +56,3 @@ else
     curl -sS -u axemorgan -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/user/keys -d "{\"title\":\"$MACHINE_NAME\", \"key\":\"$PUBLIC_KEY\"}" >/dev/null
     echo "$HOME/.ssh/${MACHINE_NAME// /_}.pub was added to Github"
 fi
-
-# sh -c "$HOME/$PROJECTS_DIR/cuddly-spork/setup.sh"

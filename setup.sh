@@ -2,102 +2,6 @@
 
 echo ""
 
-# EXIT_CODE_HOMEBREW_INSTALL_FAILED=99
-
-# SCRIPT_DIR=$(pwd)
-
-# IS_WORK_INSTALLATION=0
-
-# ################################################################################
-# # Runs the given command and suppresses its output
-# # Arguments:
-# #   $1 : the command to run
-# # Returns:
-# #   Nothing
-# ################################################################################
-# silently() {
-#   eval $1 >/dev/null 2>&1
-# }
-
-# ################################################################################
-# # Warns the user about overwriting existing dotfiles and prompts them to
-# # continue. An afirmative response continues, a negative response exits the
-# # script.
-# # Arguments:
-# #   None
-# # Returns:
-# #   Nothing
-# ################################################################################
-# show_overwrite_warning() {
-#   while true; do
-#     read -p "Warning: this script will overwrite any current dotfiles. Continue? [y/n] " response
-#     case $response in
-#     [Yy]*) break ;;
-#     [Nn]*)
-#       printf "Setup cancelled\n"
-#       exit
-#       ;;
-#     *) printf "Please answer yes or no\n" ;;
-#     esac
-#   done
-
-#   printf "\n"
-# }
-
-# ################################################################################
-# # Creates the dotfiles directory, if necessary, and backs up any existing files
-# # Arguments:
-# #   None
-# # Returns:
-# #   Nothing
-# ################################################################################
-# backup_and_create_dir() {
-#   DOTFILES_DIR="$HOME/dotfiles"
-#   local backup_dir="$HOME/dotfiles_old"
-
-#   # Checks for an existing dotfiles directory
-#   if [[ -d $DOTFILES_DIR ]]; then
-#     printf "Found existing dotfiles. Backing up to $backup_dir\n"
-#     mkdir -p "$backup_dir"
-#     cp -R "$DOTFILES_DIR"/ "$backup_dir"
-#     rm -r "$DOTFILES_DIR"
-#     mkdir -p "$DOTFILES_DIR"
-#     printf "Backup finished\n"
-#   else
-#     mkdir -p $DOTFILES_DIR
-#     printf "Created dotfiles directory\n"
-#   fi
-
-#   printf "\n"
-# }
-
-# ################################################################################
-# # Prompts the user to choose work or home installation which is used to
-# # configure the script.
-# # Arguments:
-# #   None
-# # Returns:
-# #   IS_WORK_INSTALLATION will be set true or false
-# ################################################################################
-# prompt_for_work_or_home() {
-#   while true; do
-#     read -p "Is this a work or home installation? [work/home] " response
-#     case "$response" in
-#     work*)
-#       IS_WORK_INSTALLATION=1
-#       break
-#       ;;
-#     home*)
-#       IS_WORK_INSTALLATION=0
-#       break
-#       ;;
-#     *) printf "Please answer work or home\n" ;;
-#     esac
-#   done
-
-#   printf "\n"
-# }
-
 # ################################################################################
 # # Configures bashrc and bash_profile
 # # Arguments:
@@ -183,29 +87,6 @@ echo ""
 #     printf "Installing $1...\n"
 #     brew cask install $1
 #   fi
-# }
-
-# ################################################################################
-# # Installs and configures git, and some extra git tools
-# # Arguments:
-# #   None
-# # Returns:
-# #   Nothing
-# ################################################################################
-# configure_git() {
-#   install_package git
-
-#   printf "Configuring git...\n"
-#   git config --global user.name "Alex Morgan"
-#   git config --global user.email "axemorgan@gmail.com"
-
-#   install_package bash-git-prompt
-
-#   install_package bash-completion
-
-#   printf "Git configuration complete\n"
-
-#   printf "\n"
 # }
 
 # ##
