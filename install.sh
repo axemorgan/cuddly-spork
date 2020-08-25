@@ -20,4 +20,13 @@ echo "Installing dotfiles..."
 
 create_projects_directory
 
-git clone --progress https://github.com/axemorgan/cuddly-spork.git "$HOME/$PROJECTS_DIR/cuddly-spork"
+if [ ! -d "$HOME/$PROJECTS_DIR/cuddly-spork" ]; then
+    git clone --progress https://github.com/axemorgan/cuddly-spork.git "$HOME/$PROJECTS_DIR/cuddly-spork"
+else
+    echo "The dotfiles repo is already present, pulling the latest changes..."
+    git pull
+    if [ $? -ne 0 ]; then
+        echo "FATAL: Unable to pull changes! Exiting"
+        exit 1
+    fi
+fi
