@@ -16,12 +16,14 @@ function create_projects_directory() {
     fi
 }
 
+# Clones the cuddly-spork repo to the projects directory, or pulls changes if it exists
 function clone_or_update_repo() {
-    if [ ! -d "$HOME/$PROJECTS_DIR/cuddly-spork" ]; then
-        git clone --progress https://github.com/axemorgan/cuddly-spork.git "$HOME/$PROJECTS_DIR/cuddly-spork"
+    REPO_DIR="$HOME/$PROJECTS_DIR/cuddly-spork"
+    if [ ! -d "$REPO_DIR" ]; then
+        git clone --progress https://github.com/axemorgan/cuddly-spork.git "$REPO_DIR"
     else
         echo "The dotfiles repo is already present, pulling the latest changes..."
-        git pull
+        git -C "$REPO_DIR" pull
         if [ $? -ne 0 ]; then
             echo "FATAL: Unable to pull changes! Exiting"
             exit 1
