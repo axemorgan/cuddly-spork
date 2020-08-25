@@ -6,21 +6,20 @@ SCRIPT_DIR=$(pwd)
 
 IS_WORK_INSTALLATION=0
 
-
 ################################################################################
 # Runs the given command and suppresses its output
-# Arguments: 
+# Arguments:
 #   $1 : the command to run
 # Returns:
 #   Nothing
 ################################################################################
 silently() {
-  eval $1 > /dev/null 2>&1
+  eval $1 >/dev/null 2>&1
 }
 
 ################################################################################
-# Warns the user about overwriting existing dotfiles and prompts them to 
-# continue. An afirmative response continues, a negative response exits the 
+# Warns the user about overwriting existing dotfiles and prompts them to
+# continue. An afirmative response continues, a negative response exits the
 # script.
 # Arguments:
 #   None
@@ -31,15 +30,17 @@ show_overwrite_warning() {
   while true; do
     read -p "Warning: this script will overwrite any current dotfiles. Continue? [y/n] " response
     case $response in
-      [Yy]* ) break;;
-      [Nn]* ) printf "Setup cancelled\n"; exit;;
-      * ) printf "Please answer yes or no\n";;
+    [Yy]*) break ;;
+    [Nn]*)
+      printf "Setup cancelled\n"
+      exit
+      ;;
+    *) printf "Please answer yes or no\n" ;;
     esac
   done
 
   printf "\n"
 }
-
 
 ################################################################################
 # Creates the dotfiles directory, if necessary, and backs up any existing files
@@ -69,7 +70,7 @@ backup_and_create_dir() {
 }
 
 ################################################################################
-# Prompts the user to choose work or home installation which is used to 
+# Prompts the user to choose work or home installation which is used to
 # configure the script.
 # Arguments:
 #   None
@@ -80,15 +81,20 @@ prompt_for_work_or_home() {
   while true; do
     read -p "Is this a work or home installation? [work/home] " response
     case "$response" in
-      work* ) IS_WORK_INSTALLATION=1; break;;
-      home* ) IS_WORK_INSTALLATION=0; break;;
-      * ) printf "Please answer work or home\n";;
+    work*)
+      IS_WORK_INSTALLATION=1
+      break
+      ;;
+    home*)
+      IS_WORK_INSTALLATION=0
+      break
+      ;;
+    *) printf "Please answer work or home\n" ;;
     esac
   done
 
   printf "\n"
 }
-
 
 ################################################################################
 # Configures bashrc and bash_profile
@@ -103,11 +109,11 @@ configure_shell() {
   chmod +x $DOTFILES_DIR/shell/bin/*
 
   if [ "$IS_WORK_INSTALLATION" -eq 1 ]; then
-    echo "source $DOTFILES_DIR/shell/bashrc_work" >> $DOTFILES_DIR/shell/bashrc
+    echo "source $DOTFILES_DIR/shell/bashrc_work" >>$DOTFILES_DIR/shell/bashrc
   else
-  	echo "source $DOTFILES_DIR/shell/bashrc_home" >> $DOTFILES_DIR/shell/bashrc
+    echo "source $DOTFILES_DIR/shell/bashrc_home" >>$DOTFILES_DIR/shell/bashrc
   fi
-  echo "" >> $DOTFILES_DIR/shell/bashrc
+  echo "" >>$DOTFILES_DIR/shell/bashrc
 
   printf "Settup up bashrc...\n"
   ln -fs $DOTFILES_DIR/shell/bashrc "$HOME/.bashrc"
@@ -118,7 +124,6 @@ configure_shell() {
   printf "Shell configuration complete\n"
   printf "\n"
 }
-
 
 ################################################################################
 # Checks for homebrew and installs it if needed
@@ -139,11 +144,10 @@ install_homebrew() {
     else
       printf "Failed to install homebrew, exiting setup\n"
       exit $EXIT_CODE_HOMEBREW_INSTALL_FAILED
-	fi
+    fi
   fi
-  printf "\n"	
+  printf "\n"
 }
-
 
 ################################################################################
 # Installs a package using homebrew
@@ -162,7 +166,6 @@ install_package() {
   fi
 }
 
-
 ################################################################################
 # Installs a cask using homebrew
 # Arguments:
@@ -179,7 +182,6 @@ install_cask() {
     brew cask install $1
   fi
 }
-
 
 ################################################################################
 # Installs and configures git, and some extra git tools
@@ -204,24 +206,22 @@ configure_git() {
   printf "\n"
 }
 
-
 ##
 # Configure macOS defaults
 ##
 configure_defaults() {
-	printf "Configuring macOS defaults...\n"
-	
-	DEFAULTS_FILE="$SCRIPT_DIR/macos_defaults"
-	if [[ -e $DEFAULTS_FILE ]]; then
-		source $DEFAULTS_FILE
-		printf "Finished configuring macOS\n"
-	else
-		printf "Failed to find defaults file at $DEFAULTS_FILE\nSkipping macOS configuration\n"
-	fi
+  printf "Configuring macOS defaults...\n"
+
+  DEFAULTS_FILE="$SCRIPT_DIR/macos_defaults"
+  if [[ -e $DEFAULTS_FILE ]]; then
+    source $DEFAULTS_FILE
+    printf "Finished configuring macOS\n"
+  else
+    printf "Failed to find defaults file at $DEFAULTS_FILE\nSkipping macOS configuration\n"
+  fi
 
   printf "\n"
 }
-
 
 ################################################################################
 # Main
@@ -242,37 +242,36 @@ main() {
   brew tap caskroom/cask
 
   CASKS=(
-	  google-chrome 	# Chrome browser
-	  spectacle		# Mac window manager
-	  postman			# REST service testing
-	  gimp			# Photoshop, but free
-	  sublime-text	# Text editing
-	  java 			# Java is required for Android SDK
-	  android-studio  # Android!
-	  android-sdk		# Android SDK
-    gitkraken       # Git GUI Tool
+    google-chrome  # Chrome browser
+    spectacle      # Mac window manager
+    postman        # REST service testing
+    gimp           # Photoshop, but free
+    sublime-text   # Text editing
+    java           # Java is required for Android SDK
+    android-studio # Android!
+    android-sdk    # Android SDK
+    gitkraken      # Git GUI Tool
     slack
   )
 
   printf "Casks to be installed:\n"
 
   for cask in ${CASKS[@]}; do
-	  printf "$cask\n"
+    printf "$cask\n"
   done
   unset cask
   printf "\n"
 
   for cask in ${CASKS[@]}; do
-	  install_cask "$cask"
-  done 
-
+    install_cask "$cask"
+  done
 
   # Work only cask installation
   if [ "$IS_WORK_INSTALLATION" -eq 1 ]; then
     brew tap burnsra/tap
 
     CASKS=(
-      spike           # Spike Proxy
+      spike # Spike Proxy
     )
 
     printf "Work casks to be installed:\n"
@@ -285,7 +284,7 @@ main() {
 
     for cask in ${CASKS[@]}; do
       install_cask "$cask"
-    done 
+    done
 
     printf "Done installing work casks\n\n"
   fi
@@ -298,4 +297,5 @@ main() {
   printf "\nSetup complete!\n"
 }
 
-main
+# main
+echo "Executing setup.sh"
