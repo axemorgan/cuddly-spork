@@ -58,6 +58,7 @@ exec zsh
 # Configure Git
 git config --global user.name "Alex Morgan"
 git config --global user.email "axemorgan@gmail.com"
+git config --global core.pager "more"
 
 echo "Connecting Github SSH..."
 read -p "Give a name to identify this machine: " MACHINE_NAME
