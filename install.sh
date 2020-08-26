@@ -3,8 +3,7 @@
 
 # Create projects directory under home if it doesn't already exist
 function create_projects_directory() {
-    # TODO this will need to be changed to "projects" after development is done
-    DEFAULT_PROJECTS_DIR="projects2"
+    DEFAULT_PROJECTS_DIR="projects"
 
     read -p "Name your projects directory, or leave it blank for the default ($DEFAULT_PROJECTS_DIR): " PROJECTS_DIR
     if [ -z "$PROJECTS_DIR"]; then
