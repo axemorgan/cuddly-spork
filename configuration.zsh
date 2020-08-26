@@ -8,7 +8,9 @@ alias cl="clear"
 alias ls="ls -CFGA"
 
 # Pretty prints all of the PATH components
-alias path="echo -e ${PATH//:/\\n}"
+path() {
+	echo -e "${PATH//:/\\n}"
+}
 
 # Lists directories after changing directories
 cd() {
