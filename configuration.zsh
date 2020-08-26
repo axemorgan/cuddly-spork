@@ -20,3 +20,9 @@ cd() {
 
 # Shorthand for fastlane using bundler
 fast() { bundle exec fastlane "$@"; }
+
+
+
+# Path Configuration
+
+export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
