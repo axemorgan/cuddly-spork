@@ -52,7 +52,7 @@ clone_or_update_repo
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Symlink to the zsh custom plugin then refresh to load the new config
-ln -s "$REPO_DIR/configuration.zsh" "$ZSH/custom/configuration.zsh"
+ln -sFf "$REPO_DIR/configuration.zsh" "$ZSH/custom/configuration.zsh"
 exec zsh
 
 # Configure Git
