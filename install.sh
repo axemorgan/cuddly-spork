@@ -51,9 +51,6 @@ function install_zsh() {
 
     # Symlink to the zsh custom plugin
     ln -sFf "$REPO_DIR/configuration.zsh" "$ZSH/custom/configuration.zsh"
-
-    # Restart zsh to apply the changes to the current session
-    exec zsh
 }
 
 # Configures some default git settings globally
@@ -108,3 +105,6 @@ if [ is_macOS ]; then
 fi
 
 echo "Done!"
+
+# Restart zsh to apply changes to the current session
+exec zsh
