@@ -9,7 +9,7 @@ alias ls="ls -CFGA"
 
 # Pretty prints all of the PATH components
 path() {
-	echo -e "${PATH//:/\\n}"
+    echo -e "${PATH//:/\\n}"
 }
 
 # Lists directories after changing directories
@@ -20,8 +20,6 @@ cd() {
 
 # Shorthand for fastlane using bundler
 fast() { bundle exec fastlane "$@"; }
-
-
 
 # Path Configuration
 

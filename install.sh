@@ -87,8 +87,9 @@ function is_macOS() {
     fi
 }
 
-function setup_mac_terminal_shortcuts() {
-    echo -e "\n# Line/word navigation shortcuts for macOS terminal \nbindkey "[D" backward-word \nbindkey "[C" forward-word \nbindkey "^[a" beginning-of-line \nbindkey "^[e" end-of-line \n" >>"$ZSH/custom/configuration.zsh"
+# Links the zsh configuration file specific to macOS
+function link_mac_zsh_configuraion() {
+    ln -sFf "$REPO_DIR/configuration_mac.zsh" "$ZSH/custom/configuration_mac.zsh"
 }
 
 echo "Installing dotfiles..."
@@ -101,7 +102,7 @@ setup_github_ssh
 
 if [ is_macOS ]; then
     echo "Performing macOS specific setup..."
-    setup_mac_terminal_shortcuts
+    link_mac_zsh_configuraion
 fi
 
 echo "Done!"
