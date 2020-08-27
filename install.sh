@@ -81,6 +81,19 @@ function setup_github_ssh() {
     fi
 }
 
+# Returns true if running on OSX or macOS
+function is_macOS() {
+    if ! type sw_vers >/dev/null; then
+        return true
+    else
+        return false
+    fi
+}
+
+function setup_mac_terminal_shortcuts() {
+    echo -e "\n# Line/word navigation shortcuts for macOS terminal \nbindkey "[D" backward-word \nbindkey "[C" forward-word \nbindkey "^[a" beginning-of-line \nbindkey "^[e" end-of-line \n" >>"$ZSH/custom/configuration.zsh"
+}
+
 echo "Installing dotfiles..."
 setup_shell_proxy
 create_projects_directory
@@ -88,4 +101,10 @@ clone_or_update_repo
 install_zsh
 configure_git
 setup_github_ssh
+
+if [ is_macOS ]; then
+    echo "Performing macOS specific setup..."
+    setup_mac_terminal_shortcuts
+fi
+
 echo "Done!"
