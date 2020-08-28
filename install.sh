@@ -51,6 +51,11 @@ function install_zsh() {
 
     # Symlink to the zsh custom plugin
     ln -sFf "$REPO_DIR/configuration.zsh" "$ZSH/custom/configuration.zsh"
+
+    # Create a config file to export the projects directory an env variable
+    projects_config="$ZSH/custom/projects_dir.zsh"
+    echo "export PROJECTS=$HOME/$PROJECTS_DIR" > "$projects_config"
+    source "$projects_config"
 }
 
 # Configures some default git settings globally
