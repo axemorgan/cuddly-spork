@@ -101,7 +101,6 @@ echo "Installing dotfiles..."
 setup_shell_proxy
 create_projects_directory
 clone_or_update_repo
-install_zsh
 configure_git
 setup_github_ssh
 
@@ -110,6 +109,7 @@ if [ is_macOS ]; then
     link_mac_zsh_configuraion
 fi
 
+install_zsh
 echo "Done!"
 
 # Restart zsh to apply changes to the current session
