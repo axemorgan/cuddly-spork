@@ -1,6 +1,11 @@
 #!/bin/bash
 # This script downloads the dotfiles repo to a project directory and then executes the setup script
 
+# Runs a command and suppresses its output
+silently() {
+  eval $1 > /dev/null 2>&1
+}
+
 # Create projects directory under home if it doesn't already exist
 function create_projects_directory() {
     DEFAULT_PROJECTS_DIR="projects"
@@ -97,19 +102,57 @@ function link_mac_zsh_configuraion() {
     ln -sFf "$REPO_DIR/configuration_mac.zsh" "$ZSH/custom/configuration_mac.zsh"
 }
 
+# Checks for brews's presence and installs it if not found
+install_homebrew_if_needed() {
+  silently "brew -v"
+  if [[ $? -eq 0 ]]; then
+    echo "Homebrew is already installed 😎"
+  else
+    echo "Installing homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+    if [[ $? -eq 0 ]]; then
+      echo "Homebrew successfully installed"
+    else
+      echo "Failed to install homebrew, exiting setup"
+      exit $EXIT_CODE_HOMEBREW_INSTALL_FAILED
+    fi
+  fi
+}
+
+# Install a package using brew; the package name is the first argument
+install_brew_package() {
+  FILES=$(brew list $1)
+  if [[ $FILES ]]; then
+    echo "☑️  $1 already installed"
+  else
+    printf "Installing $1...\n"
+    brew install $1
+  fi
+}
+
+# Installs homebrew and brews some packages
+function install_mac_apps() {
+  install_homebrew_if_needed
+  echo "Installing default apps..."
+  install_brew_package jq # Command-line JSON parser
+}
+
 echo "Installing dotfiles..."
 setup_shell_proxy
 create_projects_directory
 clone_or_update_repo
 configure_git
-setup_github_ssh
 
 if [ is_macOS ]; then
     echo "Performing macOS specific setup..."
     link_mac_zsh_configuraion
+    install_mac_apps
 fi
 
+setup_github_ssh
 install_zsh
+
 echo "Done!"
 
 # Restart zsh to apply changes to the current session
