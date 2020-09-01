@@ -75,6 +75,7 @@ function configure_git() {
     git config --global user.name "Alex Morgan"
     git config --global user.email "axemorgan@gmail.com"
     git config --global core.pager "more"
+    git config --gloabl core.editor "nano"
 }
 
 # Checks Github for an SSH key for this machine, creating and uploading one if needed
