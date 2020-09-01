@@ -39,6 +39,7 @@ function clone_or_update_repo() {
 function setup_shell_proxy() {
     read -p "Is this machine proxied by Spike? (y/n): " PROXIED
     if [ $PROXIED == 'y' ]; then
+        # This needs to copied here because we may not have any of the other files yet
         export http_proxy="http://127.0.0.1:3128"
         export https_proxy=$http_proxy
         export ftp_proxy=$http_proxy
@@ -61,6 +62,12 @@ function install_zsh() {
     projects_config="$ZSH/custom/projects_dir.zsh"
     echo "export PROJECTS=$HOME/$PROJECTS_DIR" > "$projects_config"
     source "$projects_config"
+
+    # Symlink proxy configuration if needed
+    if [ $PROXIED == 'y' ]; then
+        echo "Making the proxy settings permanent..."
+        ln -sFf "$REPO_DIR/configuration_proxy.zsh" "$ZSH/custom/configuration_proxy.zsh"
+    fi
 }
 
 # Configures some default git settings globally
