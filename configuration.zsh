@@ -18,6 +18,16 @@ cd() {
     ls
 }
 
+# Hides a file/directory by adding a leading '.' 
+hide() {
+	filename=$1
+    if [ "${filename:0:1}" = "." ]; then
+        mv "$filename" "${filename:1}"
+    else
+        mv "$filename" ".$filename"
+    fi 
+}
+
 # Shorthand for fastlane using bundler
 fast() { bundle exec fastlane "$@"; }
 
