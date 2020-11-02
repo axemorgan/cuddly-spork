@@ -144,6 +144,7 @@ function install_mac_apps() {
   install_homebrew_if_needed
   echo "Installing default apps..."
   install_brew_package jq # Command-line JSON parser
+  install_brew_package rbenv # For managing multiple ruby versions
 }
 
 echo "Installing dotfiles..."
